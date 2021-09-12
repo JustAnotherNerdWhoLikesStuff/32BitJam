@@ -1,0 +1,10 @@
+*.suo
+/Library
+/Logs
+/obj
+/Packages
+/UserSettings
+/Temp
+/.vsconfig
+/32BitJam.sln
+/Assembly-CSharp.csproj
