@@ -1,4 +1,5 @@
 *.suo
+/.vs
 /Library
 /Logs
 /obj
