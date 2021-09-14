@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GravityInZ : MonoBehaviour
 {
-    public float GravitationalAccel_mpf2= 1;
+    public float GravitationalAccel_mpd2 = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +15,6 @@ public class GravityInZ : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.GetComponent<Rigidbody>().AddForceAtPosition(new Vector3(0, 0, -GravitationalAccel_mpf2), gameObject.transform.position, ForceMode.Acceleration);
+        gameObject.GetComponent<Rigidbody>().AddForceAtPosition(new Vector3(0, 0, -GravitationalAccel_mpd2), gameObject.transform.position, ForceMode.Acceleration);
     }
 }
