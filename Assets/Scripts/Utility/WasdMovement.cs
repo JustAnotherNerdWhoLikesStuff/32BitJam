@@ -25,28 +25,16 @@ public class WasdMovement : MonoBehaviour
         {
             Instantiate(dashParticle, transform.position, Quaternion.identity);
             if (Input.GetKey(KeyCode.W))
-            {
                 transform.position = new Vector3(transform.position.x, transform.position.y + dashSpeed, transform.position.z);
-            }
             if (Input.GetKey(KeyCode.S))
-            {
-                //Instantiate(dashParticle, transform.position, Quaternion.identity);
                 transform.position = new Vector3(transform.position.x, transform.position.y - dashSpeed, transform.position.z);
-            }
             if (Input.GetKey(KeyCode.A))
-            {
-                //Instantiate(dashParticle, transform.position, Quaternion.identity);
                 transform.position = new Vector3(transform.position.x + dashSpeed, transform.position.y, transform.position.z);
-            }
             if (Input.GetKey(KeyCode.D))
-            {
-                //Instantiate(dashParticle, transform.position, Quaternion.identity);
                 transform.position = new Vector3(transform.position.x - dashSpeed, transform.position.y, transform.position.z);
-            }
         }
-
-        //else
-        //{
+        else
+        {
             if (Input.GetKey(KeyCode.W))
                 transform.position = new Vector3(transform.position.x, transform.position.y + MovementSpeed_mpf * Time.deltaTime, transform.position.z);
             if (Input.GetKey(KeyCode.S))
@@ -55,6 +43,6 @@ public class WasdMovement : MonoBehaviour
                 transform.position = new Vector3(transform.position.x + MovementSpeed_mpf * Time.deltaTime, transform.position.y, transform.position.z);
             if (Input.GetKey(KeyCode.D))
                 transform.position = new Vector3(transform.position.x - MovementSpeed_mpf * Time.deltaTime, transform.position.y, transform.position.z);
-        //}
+        }
     }
 }
