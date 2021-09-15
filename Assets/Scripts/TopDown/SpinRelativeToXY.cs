@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetBottomMeshToZero : MonoBehaviour
+public class SpinRelativeToXY : MonoBehaviour
 {
+    public float RotationRate_degpf;
+
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.lossyScale.z / 2.0f);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        gameObject.transform.RotateAround(gameObject.transform.position, Vector3.back, RotationRate_degpf * Time.deltaTime);
     }
 }
