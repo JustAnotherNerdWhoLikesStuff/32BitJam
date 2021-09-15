@@ -381,8 +381,8 @@ GameObject:
   - component: {fileID: 528994444}
   - component: {fileID: 528994443}
   - component: {fileID: 528994448}
-  - component: {fileID: 528994449}
   - component: {fileID: 528994450}
+  - component: {fileID: 528994449}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 528994447}
-  smoothSpeed: 0.25
+  smoothSpeed: 1
   offset: {x: 0, y: 0, z: 15}
 --- !u!1 &980443610
 GameObject:
