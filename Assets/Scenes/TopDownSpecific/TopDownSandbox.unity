@@ -379,10 +379,11 @@ GameObject:
   - component: {fileID: 528994446}
   - component: {fileID: 528994445}
   - component: {fileID: 528994444}
+  - component: {fileID: 528994449}
   - component: {fileID: 528994443}
+  - component: {fileID: 528994451}
   - component: {fileID: 528994448}
   - component: {fileID: 528994450}
-  - component: {fileID: 528994449}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -485,7 +486,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528994442}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca57ce0cffd80ee4e953b96847ad6818, type: 3}
   m_Name: 
@@ -517,7 +518,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528994442}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fc4c4800b2b7a7469763298b7e9b118, type: 3}
   m_Name: 
@@ -526,6 +527,18 @@ MonoBehaviour:
   dashParticle: {fileID: 5592386604845884570, guid: 3c4215363560807448ffed4f568d187b, type: 3}
   dashSpeed: 2.5
   startDashTime: 0.1
+--- !u!114 &528994451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528994442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f66d518212a0c42bf0aa268136defc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &557591805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,6 +1254,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1328,6 +1342,19 @@ MonoBehaviour:
   target: {fileID: 528994447}
   smoothSpeed: 1
   offset: {x: 0, y: 0, z: 15}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f6bccdd3074c5643ad03b5e650a0d69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToFollow: {fileID: 528994442}
 --- !u!1 &980443610
 GameObject:
   m_ObjectHideFlags: 0
