@@ -9,13 +9,24 @@ public class Pickupable : MonoBehaviour
         get { return isPickedUp; }
         set
         {
-            wasPickedUp = isPickedUp;
             isPickedUp = value;
+            if (isPickedUp)
+            {
+                previousOrientation = gameObject.transform.rotation;
+                gameObject.GetComponent<Glow>().Glowing = false;
+                gameObject.GetComponent<SpinRelativeToXY>().Spin = false;
+            }
+            else
+            {
+                gameObject.transform.rotation = previousOrientation;
+                gameObject.GetComponent<Glow>().Glowing = true;
+                gameObject.GetComponent<SpinRelativeToXY>().Spin = true;
+            }
         }
     }
 
     private bool isPickedUp = false;
-    private bool wasPickedUp = false;
+    private Quaternion previousOrientation;
     private Collider owner;
 
     // Start is called before the first frame update
@@ -29,26 +40,19 @@ public class Pickupable : MonoBehaviour
     {
         if (IsPickedUp)
         {
-            transform.position = new Vector3(owner.transform.position.x, owner.transform.position.y + (owner.transform.lossyScale.y + transform.lossyScale.y / 2.0f), owner.transform.position.z);
+            gameObject.transform.rotation = owner.transform.rotation;
+            float distanceFromCenter = owner.transform.lossyScale.y;
+            // Don't know why this vector works, but it does.
+            Vector3 objectPosition = new Vector3(0.0f, 0.0f, distanceFromCenter);
+            Vector3 rotationPosition = owner.transform.rotation * objectPosition;
+            gameObject.transform.position = owner.transform.position + rotationPosition;
         }
-        if (IsPickedUp && !wasPickedUp)
-        {
-            Debug.Log("Picked up rising edge.");
-            gameObject.GetComponent<Glow>().Glowing = false;
-        }
-        else if (wasPickedUp && !IsPickedUp)
-        {
-            Debug.Log("Picked up falling edge.");
-            gameObject.GetComponent<Glow>().Glowing = true;
-        }
-        wasPickedUp = IsPickedUp;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Entered collider.");
             owner = other;
             gameObject.GetComponent<Glow>().Glowing = true;
         }
@@ -58,7 +62,6 @@ public class Pickupable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Exited collider.");
             owner = null;
             gameObject.GetComponent<Glow>().Glowing = false;
         }
