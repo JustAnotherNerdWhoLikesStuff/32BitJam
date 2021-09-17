@@ -381,11 +381,11 @@ GameObject:
   - component: {fileID: 528994444}
   - component: {fileID: 528994452}
   - component: {fileID: 528994449}
+  - component: {fileID: 528994453}
   - component: {fileID: 528994443}
   - component: {fileID: 528994451}
   - component: {fileID: 528994448}
   - component: {fileID: 528994450}
-  - component: {fileID: 528994449}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Player
@@ -529,6 +529,18 @@ MonoBehaviour:
   dashParticle: {fileID: 5592386604845884570, guid: 3c4215363560807448ffed4f568d187b, type: 3}
   dashSpeed: 2.5
   startDashTime: 0.1
+--- !u!114 &528994451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528994442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f66d518212a0c42bf0aa268136defc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &528994452
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -542,7 +554,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &528994451
+--- !u!114 &528994453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -551,7 +563,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 528994442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16f66d518212a0c42bf0aa268136defc, type: 3}
+  m_Script: {fileID: 11500000, guid: 28f8d466e626bcc4f8950620eff74a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &557591805
@@ -1880,6 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d6f7eb9574b7d4e9df771508fe4722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Spin: 1
   RotationRate_degpf: 25
 --- !u!114 &1913565184
 MonoBehaviour:

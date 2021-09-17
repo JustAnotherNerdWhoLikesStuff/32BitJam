@@ -7,8 +7,6 @@ public class Pickupper : MonoBehaviour
     private Collider item;
     private bool canPickup = false;
 
-    private const int leftClickCode = 0;
-
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +17,7 @@ public class Pickupper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canPickup && Input.GetMouseButtonUp(leftClickCode))
+        if (canPickup && Input.GetKeyDown(KeyCode.E))
         {
             item.GetComponent<Pickupable>().IsPickedUp = !item.GetComponent<Pickupable>().IsPickedUp;
         }
