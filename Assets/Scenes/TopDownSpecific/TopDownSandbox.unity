@@ -380,9 +380,9 @@ GameObject:
   - component: {fileID: 528994445}
   - component: {fileID: 528994444}
   - component: {fileID: 528994443}
-  - component: {fileID: 528994448}
-  - component: {fileID: 528994450}
   - component: {fileID: 528994449}
+  - component: {fileID: 528994451}
+  - component: {fileID: 528994452}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -478,22 +478,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &528994448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 528994442}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca57ce0cffd80ee4e953b96847ad6818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MovementSpeed_mpf: 5
-  dashParticle: {fileID: 5592386604845884570, guid: 3c4215363560807448ffed4f568d187b, type: 3}
-  dashSpeed: 2.5
-  startDashTime: 0.1
 --- !u!54 &528994449
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -510,7 +494,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &528994450
+--- !u!114 &528994451
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -519,11 +503,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 528994442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fc4c4800b2b7a7469763298b7e9b118, type: 3}
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: 0}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &528994452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528994442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a266f9f955a78a245b93c1ab0bbeadd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed_mpf: 5
-  dashParticle: {fileID: 5592386604845884570, guid: 3c4215363560807448ffed4f568d187b, type: 3}
+  dashParticle: {fileID: 0}
   dashSpeed: 2.5
   startDashTime: 0.1
 --- !u!1 &557591805
