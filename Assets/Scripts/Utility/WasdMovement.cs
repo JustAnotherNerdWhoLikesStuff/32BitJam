@@ -9,7 +9,13 @@ public class WasdMovement : MonoBehaviour
     public float dashSpeed;
     public float startDashTime;
 
-    private Rigidbody rbPlayer;
+    public float explosionForce = 10.0f;
+    public float explosionRadius = 5.0f;
+    public GameObject explosionParticle;
+
+    private Rigidbody playerRigidBody;
+    private int dashNextNTicks;
+    private Vector3 preDashVelocity_mpd;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +38,20 @@ public class WasdMovement : MonoBehaviour
                 transform.position = new Vector3(transform.position.x + dashSpeed, transform.position.y, transform.position.z);
             if (Input.GetKey(KeyCode.D))
                 transform.position = new Vector3(transform.position.x - dashSpeed, transform.position.y, transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Instantiate(explosionParticle, transform.position, transform.rotation);
+            Vector3 explosionPos = transform.position;
+            Collider[] colliders = Physics.OverlapSphere(explosionPos, explosionRadius);
+
+            foreach (Collider hit in colliders)
+            {
+                Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+                if (rb != null && hit.tag != "Item")
+                    rb.AddExplosionForce(explosionForce, explosionPos, explosionRadius, 0.0f);
+            }
         }
         else
         {
