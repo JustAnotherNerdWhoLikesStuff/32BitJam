@@ -2,20 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType
-{
-    Inert,  // Default, throwable
-    Explosive
-}
 public class Pickupable : MonoBehaviour
 {
-    public float ThrowMultiplier;
-    public ItemType itemType;
-
-    public float explosionForce = 10.0f;
-    public float explosionRadius = 5.0f;
-    public GameObject explosionParticle;
-
     public bool IsPickedUp
     {
         get { return isPickedUp; }
@@ -24,27 +12,36 @@ public class Pickupable : MonoBehaviour
             isPickedUp = value;
             if (isPickedUp)
             {
-                previousOrientation = gameObject.transform.rotation;
-                gameObject.GetComponent<Glow>().Glowing = false;
-                gameObject.GetComponent<SpinRelativeToXY>().Spin = false;
+                initialOrientation = gameObject.transform.rotation;
+                Glow glowComponent;
+                if (gameObject.TryGetComponent<Glow>(out glowComponent))
+                    glowComponent.Glowing = false;
+                SpinRelativeToXY spinComponent;
+                if (gameObject.TryGetComponent<SpinRelativeToXY>(out spinComponent))
+                    spinComponent.Spin = false;
             }
             else
             {
-                gameObject.transform.rotation = previousOrientation;
-                gameObject.GetComponent<Glow>().Glowing = true;
-                gameObject.GetComponent<SpinRelativeToXY>().Spin = true;
+                gameObject.transform.rotation = initialOrientation;
+                Glow glowComponent;
+                if (gameObject.TryGetComponent<Glow>(out glowComponent))
+                    glowComponent.Glowing = true;
+                SpinRelativeToXY spinComponent;
+                if (gameObject.TryGetComponent<SpinRelativeToXY>(out spinComponent))
+                    spinComponent.Spin = true;
             }
         }
     }
 
+    public Collider Owner { get; private set; }
+
     private bool isPickedUp = false;
-    private Quaternion previousOrientation;
-    private Collider owner;
+    private Quaternion initialOrientation;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        initialOrientation = gameObject.transform.rotation;
     }
 
     // Update is called once per frame
@@ -52,35 +49,27 @@ public class Pickupable : MonoBehaviour
     {
         if (IsPickedUp)
         {
-            gameObject.transform.rotation = owner.transform.rotation;
-            float distanceFromCenter = owner.transform.lossyScale.y;
-            // Don't know why this vector works, but it does.
+            gameObject.transform.rotation = Owner.transform.rotation;
+            float distanceFromCenter = Owner.transform.lossyScale.y;
             Vector3 objectPosition = new Vector3(0.0f, 0.0f, distanceFromCenter);
-            Vector3 rotationPosition = owner.transform.rotation * objectPosition;
-            gameObject.transform.position = owner.transform.position + rotationPosition;
+            Vector3 rotationPosition = Owner.transform.rotation * objectPosition;
+            gameObject.transform.position = Owner.transform.position + rotationPosition;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void UseItem()
     {
-        Debug.Log("OnCollisionEnter");
-        
-        Debug.Log("Here?");
-        if (itemType == ItemType.Explosive)
+        foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
         {
-            Instantiate(explosionParticle, transform.position, transform.rotation);
-            Vector3 explosionPos = transform.position;
-            Collider[] colliders = Physics.OverlapSphere(explosionPos, explosionRadius);
+            item.Use();
+        }
+    }
 
-            foreach (Collider hit in colliders)
-            {
-                Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-                if (rb != null && hit.tag != "Item")
-                    rb.AddExplosionForce(explosionForce, explosionPos, explosionRadius, 0.0f);
-            }
-
-            Destroy(gameObject);
+    public void UseItemAlternate()
+    {
+        foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
+        {
+            item.AltUse();
         }
     }
 
@@ -88,7 +77,7 @@ public class Pickupable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            owner = other;
+            Owner = other;
             gameObject.GetComponent<Glow>().Glowing = true;
         }
     }
@@ -97,7 +86,7 @@ public class Pickupable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            owner = null;
+            Owner = null;
             gameObject.GetComponent<Glow>().Glowing = false;
         }
     }

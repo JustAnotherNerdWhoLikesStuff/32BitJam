@@ -19,7 +19,26 @@ public class Pickupper : MonoBehaviour
     {
         if (canPickup && Input.GetKeyDown(KeyCode.E))
         {
-            item.GetComponent<Pickupable>().IsPickedUp = !item.GetComponent<Pickupable>().IsPickedUp;
+            Pickupable pickup;
+            bool hasPickupable = item.TryGetComponent<Pickupable>(out pickup);
+            if (hasPickupable)
+            {
+                if (canPickup && Input.GetKeyDown(KeyCode.E))
+                {
+                    pickup.IsPickedUp = !pickup.IsPickedUp;
+                }
+                if (pickup.IsPickedUp)
+                {
+                    if (Input.GetMouseButtonDown(leftClickCode))
+                    {
+                        pickup.UseItem();
+                    }
+                    if (Input.GetMouseButtonDown(rightClickCode))
+                    {
+                        pickup.UseItemAlternate();
+                    }
+                }
+            }
         }
     }
 
