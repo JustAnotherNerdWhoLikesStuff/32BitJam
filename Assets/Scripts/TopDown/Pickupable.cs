@@ -13,6 +13,9 @@ public class Pickupable : MonoBehaviour
             if (isPickedUp)
             {
                 initialOrientation = gameObject.transform.rotation;
+                IUseItem itemInterfaceComponent;
+                if (gameObject.TryGetComponent<IUseItem>(out itemInterfaceComponent))
+                    itemInterfaceComponent.OnPickup();
                 Glow glowComponent;
                 if (gameObject.TryGetComponent<Glow>(out glowComponent))
                     glowComponent.Glowing = false;
@@ -23,12 +26,20 @@ public class Pickupable : MonoBehaviour
             else
             {
                 gameObject.transform.rotation = initialOrientation;
-                Glow glowComponent;
-                if (gameObject.TryGetComponent<Glow>(out glowComponent))
-                    glowComponent.Glowing = true;
-                SpinRelativeToXY spinComponent;
-                if (gameObject.TryGetComponent<SpinRelativeToXY>(out spinComponent))
-                    spinComponent.Spin = true;
+                IUseItem itemInterfaceComponent;
+                if (gameObject.TryGetComponent<IUseItem>(out itemInterfaceComponent))
+                {
+                    itemInterfaceComponent.OnPutdown();
+                }
+                if (itemInterfaceComponent.CanBePickedUp)
+                {
+                    Glow glowComponent;
+                    if (gameObject.TryGetComponent<Glow>(out glowComponent))
+                        glowComponent.Glowing = true;
+                    SpinRelativeToXY spinComponent;
+                    if (gameObject.TryGetComponent<SpinRelativeToXY>(out spinComponent))
+                        spinComponent.Spin = true;
+                }
             }
         }
     }
@@ -39,29 +50,42 @@ public class Pickupable : MonoBehaviour
     private Quaternion initialOrientation;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         initialOrientation = gameObject.transform.rotation;
+
+        foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
+        {
+            item.CollectDelegates(ResetItem);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (IsPickedUp)
         {
-            gameObject.transform.rotation = Owner.transform.rotation;
-            float distanceFromCenter = Owner.transform.lossyScale.y;
-            Vector3 objectPosition = new Vector3(0.0f, 0.0f, distanceFromCenter);
-            Vector3 rotationPosition = Owner.transform.rotation * objectPosition;
-            gameObject.transform.position = Owner.transform.position + rotationPosition;
+            if (Owner)
+            {
+                gameObject.transform.rotation = Owner.transform.rotation;
+                float distanceFromCenter = Owner.transform.lossyScale.y;
+                Vector3 objectPosition = new Vector3(0.0f, 0.0f, distanceFromCenter);
+                Vector3 rotationPosition = Owner.transform.rotation * objectPosition;
+                gameObject.transform.position = Owner.transform.position + rotationPosition;
+            }
         }
+    }
+
+    private void ResetItem()
+    {
+        Owner = null;
     }
 
     public void UseItem()
     {
         foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
         {
-            item.Use();
+            item.OnUse();
         }
     }
 
@@ -69,7 +93,7 @@ public class Pickupable : MonoBehaviour
     {
         foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
         {
-            item.AltUse();
+            item.OnAltUse();
         }
     }
 
@@ -77,8 +101,15 @@ public class Pickupable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Owner = other;
-            gameObject.GetComponent<Glow>().Glowing = true;
+            IUseItem itemInterfaceComponent;
+            if (gameObject.TryGetComponent<IUseItem>(out itemInterfaceComponent))
+            {
+                if (itemInterfaceComponent.CanBePickedUp)
+                {
+                    Owner = other;
+                    gameObject.GetComponent<Glow>().Glowing = itemInterfaceComponent.CanBePickedUp;
+                }
+            }
         }
     }
 

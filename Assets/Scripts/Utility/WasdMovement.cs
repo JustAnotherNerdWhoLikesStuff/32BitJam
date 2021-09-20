@@ -39,20 +39,6 @@ public class WasdMovement : MonoBehaviour
             if (Input.GetKey(KeyCode.D))
                 transform.position = new Vector3(transform.position.x - dashSpeed, transform.position.y, transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Instantiate(explosionParticle, transform.position, transform.rotation);
-            Vector3 explosionPos = transform.position;
-            Collider[] colliders = Physics.OverlapSphere(explosionPos, explosionRadius);
-
-            foreach (Collider hit in colliders)
-            {
-                Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-                if (rb != null && hit.tag != "Item")
-                    rb.AddExplosionForce(explosionForce, explosionPos, explosionRadius, 0.0f);
-            }
-        }
         else
         {
             if (Input.GetKey(KeyCode.W))

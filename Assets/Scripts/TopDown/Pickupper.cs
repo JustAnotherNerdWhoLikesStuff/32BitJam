@@ -4,40 +4,90 @@ using UnityEngine;
 
 public class Pickupper : MonoBehaviour
 {
-    private Collider item;
-    private bool canPickup = false;
+    private List<Collider> items = new List<Collider>();
+    private Pickupable pickedUpItem;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (canPickup && Input.GetKeyDown(KeyCode.E))
+        // Only process one of these if they all happen on the same frame
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            Pickupable pickup;
-            bool hasPickupable = item.TryGetComponent<Pickupable>(out pickup);
-            if (hasPickupable)
+            Debug.Log("E");
+            if (pickedUpItem &&
+                pickedUpItem.IsPickedUp)
             {
-                if (canPickup && Input.GetKeyDown(KeyCode.E))
+                Debug.Log("IsHeld");
+                // Drop current item
+                pickedUpItem.IsPickedUp = false;
+                pickedUpItem = null;
+            }
+            else
+            {
+                Debug.Log("IsNotHeld");
+                // Remove null items from previous deletions
+                List<Collider> itemsToRemove = new List<Collider>();
+                foreach (Collider item in items)
                 {
-                    pickup.IsPickedUp = !pickup.IsPickedUp;
+                    if (!item)
+                    {
+                        itemsToRemove.Add(item);
+                    }
                 }
-                if (pickup.IsPickedUp)
+                foreach (Collider item in itemsToRemove)
                 {
-                    if (Input.GetMouseButtonDown(leftClickCode))
-                    {
-                        pickup.UseItem();
-                    }
-                    if (Input.GetMouseButtonDown(rightClickCode))
-                    {
-                        pickup.UseItemAlternate();
-                    }
+                    Debug.Log("Hey, something was removed.");
+                    items.Remove(item);
                 }
+
+                // Check if there are items to pick up.
+                if (items.Count > 0)
+                {
+                    Debug.Log("Item(s) Nearby");
+                    // Find closest item
+                    Collider closestItem = items[0];
+                    // Only do the loop if there's more than one to choose from.
+                    if (items.Count > 1)
+                    {
+                        Debug.Log("More than one.");
+                        float closestDistance = float.MaxValue;
+                        for (int i = 0; i < items.Count; i++)
+                        {
+                            float distance = Vector3.Distance(gameObject.transform.position, items[i].transform.position);
+                            if (distance < closestDistance)
+                            {
+                                closestDistance = distance;
+                                closestItem = items[i];
+                            }
+                        }
+
+                    }
+
+                    Debug.Log("Item selected.");
+                    pickedUpItem = closestItem.GetComponent<Pickupable>();
+                    pickedUpItem.IsPickedUp = true;
+                }
+            }
+        }
+        else if (Input.GetMouseButtonDown(leftClickCode))
+        {
+            if (pickedUpItem)
+            {
+                pickedUpItem.UseItem();
+            }
+        }
+        else if (Input.GetMouseButtonDown(rightClickCode))
+        {
+            if (pickedUpItem)
+            {
+                pickedUpItem.UseItemAlternate();
             }
         }
     }
@@ -46,8 +96,7 @@ public class Pickupper : MonoBehaviour
     {
         if (other.CompareTag("Item"))
         {
-            canPickup = true;
-            item = other;
+            items.Add(other);
         }
     }
 
@@ -55,8 +104,7 @@ public class Pickupper : MonoBehaviour
     {
         if (other.CompareTag("Item"))
         {
-            canPickup = false;
-            item = null;
+            items.Remove(other);
         }
     }
 }
