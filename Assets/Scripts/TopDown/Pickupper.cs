@@ -7,6 +7,8 @@ public class Pickupper : MonoBehaviour
     private List<Collider> items = new List<Collider>();
     private Pickupable pickedUpItem;
 
+    private const int leftClickCode = 0;
+    private const int rightClickCode = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -20,18 +22,15 @@ public class Pickupper : MonoBehaviour
         // Only process one of these if they all happen on the same frame
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("E");
             if (pickedUpItem &&
                 pickedUpItem.IsPickedUp)
             {
-                Debug.Log("IsHeld");
                 // Drop current item
                 pickedUpItem.IsPickedUp = false;
                 pickedUpItem = null;
             }
             else
             {
-                Debug.Log("IsNotHeld");
                 // Remove null items from previous deletions
                 List<Collider> itemsToRemove = new List<Collider>();
                 foreach (Collider item in items)
@@ -43,20 +42,17 @@ public class Pickupper : MonoBehaviour
                 }
                 foreach (Collider item in itemsToRemove)
                 {
-                    Debug.Log("Hey, something was removed.");
                     items.Remove(item);
                 }
 
                 // Check if there are items to pick up.
                 if (items.Count > 0)
                 {
-                    Debug.Log("Item(s) Nearby");
                     // Find closest item
                     Collider closestItem = items[0];
                     // Only do the loop if there's more than one to choose from.
                     if (items.Count > 1)
                     {
-                        Debug.Log("More than one.");
                         float closestDistance = float.MaxValue;
                         for (int i = 0; i < items.Count; i++)
                         {
@@ -70,7 +66,6 @@ public class Pickupper : MonoBehaviour
 
                     }
 
-                    Debug.Log("Item selected.");
                     pickedUpItem = closestItem.GetComponent<Pickupable>();
                     pickedUpItem.IsPickedUp = true;
                 }

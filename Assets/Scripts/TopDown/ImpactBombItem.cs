@@ -96,7 +96,7 @@ public class ImpactBombItem : IUseItem
         {
             Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
 
-            if (rigidbody != null && hit.tag != "Item")
+            if (rigidbody != null && hit.tag != "Item" && hit.tag != "Player")
                 rigidbody.AddExplosionForce(explosionForce_N, explosionPosition, explosionRadius_m, 0.0f);
         }
 

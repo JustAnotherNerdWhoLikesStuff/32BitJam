@@ -96,7 +96,7 @@ public class TimedBomb : IUseItem
         {
             Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
 
-            if (rigidbody != null && hit.tag != "Item")
+            if (rigidbody != null && hit.tag != "Item" && hit.tag != "Player")
                 rigidbody.AddExplosionForce(ExplosionForce_N, explosionPosition, ExplosionRadius_m, 0.0f);
         }
 
