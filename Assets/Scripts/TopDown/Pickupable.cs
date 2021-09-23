@@ -53,11 +53,6 @@ public class Pickupable : MonoBehaviour
     private void Start()
     {
         initialOrientation = gameObject.transform.rotation;
-
-        foreach (IUseItem item in gameObject.GetComponents<IUseItem>())
-        {
-            item.CollectDelegates(ResetItem);
-        }
     }
 
     // Update is called once per frame
@@ -76,7 +71,7 @@ public class Pickupable : MonoBehaviour
         }
     }
 
-    private void ResetItem()
+    private void OnDestroy()
     {
         Owner = null;
     }

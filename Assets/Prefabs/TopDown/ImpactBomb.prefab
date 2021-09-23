@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6871640184072380221}
   - component: {fileID: 6871640184072380219}
   - component: {fileID: 6871640184072372418}
+  - component: {fileID: -1441392773481048479}
+  - component: {fileID: -7913207806983692029}
   - component: {fileID: 6871640184072372423}
   - component: {fileID: 6871640184072380218}
   - component: {fileID: 6871640184072372422}
@@ -87,6 +89,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1441392773481048479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871640184072380220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4942aa45eef9f45a6f41de4f5641df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThrowSpeed_mpd: 10
+--- !u!114 &-7913207806983692029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871640184072380220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a536126191f91d44eb7483c52396498b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExplosionForce_N: 10
+  ExplosionRadius_m: 3
+  ExplosionParticle: {fileID: 2716357449863332030, guid: a35f2f2d566ea66419fd16f556cbc867, type: 3}
 --- !u!114 &6871640184072372423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,10 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanBePickedUp: 1
-  explosionForce_N: 10
-  explosionRadius_m: 5
-  explosionParticle: {fileID: 2716357449863332030, guid: a35f2f2d566ea66419fd16f556cbc867, type: 3}
-  ThrowSpeed_mpd: 10
   LightMinMagnitude: 30
   LightMaxMagnitude: 60
   LightPeriod: 0.5

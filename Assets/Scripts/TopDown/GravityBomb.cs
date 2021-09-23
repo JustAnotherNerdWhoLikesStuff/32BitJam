@@ -6,14 +6,12 @@ using UnityEngine;
 public class GravityBomb : IUseItem
 {
     // Explosion members
-    public float ExplosionForce_N;
-    public float ExplosionRadius_m;
+    public float PullRadius_m;
     public float PullForce_N;
     public GameObject ExplosionParticle;
 
+    // Timer members
     public float TimeTilExplosion_s;
-    public float ThrowSpeed_mpd;
-
     private bool timerStarted = false;
     private bool throwNextUpdate = false;
 
@@ -28,14 +26,10 @@ public class GravityBomb : IUseItem
     {
         if (throwNextUpdate)
         {
-            Pickupable pickup = gameObject.GetComponent<Pickupable>();
-            Rigidbody itemRigidBody = gameObject.GetComponent<Rigidbody>();
-            itemRigidBody.isKinematic = false;
-            Vector3 unityVector = new Vector3(0.0f, 0.0f, ThrowSpeed_mpd);
-            Vector3 directionVector = pickup.Owner.transform.rotation * unityVector;
+            Vector3 angularVelocity = Vector3.zero;
+            gameObject.GetComponent<Throwable>().Throw(angularVelocity);
 
-            itemRigidBody.velocity = directionVector;
-            itemRigidBody.angularVelocity = new Vector3(0, 0, 0);
+            Pickupable pickup = gameObject.GetComponent<Pickupable>();
             pickup.IsPickedUp = false;
             throwNextUpdate = false;
         }
@@ -54,16 +48,8 @@ public class GravityBomb : IUseItem
 
             if (TimeTilExplosion_s <= 0.0f + Mathf.Epsilon)
             {
-                Explode();
+                gameObject.GetComponent<Explosive>().Explode();
             }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        foreach (Action callback in onDestroyDelegates)
-        {
-            callback();
         }
     }
 
@@ -71,32 +57,15 @@ public class GravityBomb : IUseItem
     private void Charge()
     {
         Vector3 explosionPosition = transform.position;
-        Collider[] colliders = Physics.OverlapSphere(explosionPosition, ExplosionRadius_m);
+        Collider[] colliders = Physics.OverlapSphere(explosionPosition, PullRadius_m);
 
         foreach (Collider hit in colliders)
         {
             Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
 
             if (rigidbody != null && hit.tag != "Item" && hit.tag != "Player")
-                rigidbody.AddExplosionForce(-(PullForce_N), explosionPosition, ExplosionRadius_m, 0.0f, ForceMode.Impulse);
+                rigidbody.AddExplosionForce(-(PullForce_N), explosionPosition, PullRadius_m, 0.0f, ForceMode.Impulse);
         }
-    }
-
-    private void Explode()
-    {
-        Instantiate(ExplosionParticle, transform.position, transform.rotation);
-        Vector3 explosionPosition = transform.position;
-        Collider[] colliders = Physics.OverlapSphere(explosionPosition, ExplosionRadius_m);
-
-        foreach (Collider hit in colliders)
-        {
-            Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
-
-            if (rigidbody != null && hit.tag != "Item" && hit.tag != "Player")
-                rigidbody.AddExplosionForce(ExplosionForce_N, explosionPosition, ExplosionRadius_m, 0.0f);
-        }
-
-        Destroy(gameObject);
     }
 
     // IUseItem overloads
@@ -113,7 +82,6 @@ public class GravityBomb : IUseItem
     public override void OnUse()
     {
         timerStarted = true;
-        CanBePickedUp = false;
     }
 
     public override void OnAltUse()

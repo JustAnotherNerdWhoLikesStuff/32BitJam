@@ -6,12 +6,6 @@ using UnityEngine;
 public abstract class IUseItem : MonoBehaviour
 {
     public bool CanBePickedUp = true;
-    protected List<Action> onDestroyDelegates = new List<Action>();
-
-    public void CollectDelegates(Action onDestroy)
-    {
-        onDestroyDelegates.Add(onDestroy);
-    }
 
     public abstract void OnPickup();
 

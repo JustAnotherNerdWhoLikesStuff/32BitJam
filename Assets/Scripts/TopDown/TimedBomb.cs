@@ -5,14 +5,7 @@ using UnityEngine;
 
 public class TimedBomb : IUseItem
 {
-    // Explostion memebers
-    public float ExplosionForce_N = 10.0f;
-    public float ExplosionRadius_m = 5.0f;
-    public GameObject explosionParticle;
-
-    // Timer and throw members
     public float TimeTilExplosion_s;
-    public float ThrowSpeed_mpd;
 
     // internal timer/tracking members
     private bool timerStarted = false;
@@ -43,16 +36,12 @@ public class TimedBomb : IUseItem
     {
         if (throwNextUpdate)
         {
-            Pickupable pickup = gameObject.GetComponent<Pickupable>();
-            Rigidbody itemRigidBody = gameObject.GetComponent<Rigidbody>();
-            itemRigidBody.isKinematic = false;
-            Vector3 unityVector = new Vector3(0.0f, 0.0f, ThrowSpeed_mpd);
-            Vector3 directionVector = pickup.Owner.transform.rotation * unityVector;
+            Vector3 angularVelocity = new Vector3(4 * Mathf.PI * UnityEngine.Random.value,
+                                                  4 * Mathf.PI * UnityEngine.Random.value,
+                                                  4 * Mathf.PI * UnityEngine.Random.value);
+            gameObject.GetComponent<Throwable>().Throw(angularVelocity);
 
-            itemRigidBody.velocity = directionVector;
-            itemRigidBody.angularVelocity = new Vector3(4 * Mathf.PI * UnityEngine.Random.value,
-                                                        4 * Mathf.PI * UnityEngine.Random.value,
-                                                        4 * Mathf.PI * UnityEngine.Random.value);
+            Pickupable pickup = gameObject.GetComponent<Pickupable>();
             pickup.IsPickedUp = false;
             throwNextUpdate = false;
         }
@@ -73,34 +62,9 @@ public class TimedBomb : IUseItem
 
             if (TimeTilExplosion_s <= 0.0f + Mathf.Epsilon)
             {
-                Explode();
+                gameObject.GetComponent<Explosive>().Explode();
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        foreach (Action callback in onDestroyDelegates)
-        {
-            callback();
-        }
-    }
-
-    private void Explode()
-    {
-        Instantiate(explosionParticle, transform.position, transform.rotation);
-        Vector3 explosionPosition = transform.position;
-        Collider[] colliders = Physics.OverlapSphere(explosionPosition, ExplosionRadius_m);
-
-        foreach (Collider hit in colliders)
-        {
-            Rigidbody rigidbody = hit.GetComponent<Rigidbody>();
-
-            if (rigidbody != null && hit.tag != "Item" && hit.tag != "Player")
-                rigidbody.AddExplosionForce(ExplosionForce_N, explosionPosition, ExplosionRadius_m, 0.0f);
-        }
-
-        Destroy(gameObject);
     }
 
     // IUseItem overrides
@@ -117,7 +81,6 @@ public class TimedBomb : IUseItem
     public override void OnUse()
     {
         timerStarted = true;
-        CanBePickedUp = false;
         fuseParticle.SetActive(true);
     }
 

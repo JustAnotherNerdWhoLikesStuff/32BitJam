@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GravityInZ : MonoBehaviour
 {
-    public float GravitationalAcceleration_mpd2;
+    public static float GravitationalAcceleration_mpd2 = 3.0f;
 
     // Start is called before the first frame update
     void Start()
