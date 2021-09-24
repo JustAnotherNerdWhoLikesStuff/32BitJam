@@ -4,17 +4,34 @@ using UnityEngine;
 
 public class WasdMovement : MonoBehaviour
 {
-    public float MovementSpeed_mpf;
-    public GameObject dashParticle;
-    public float dashSpeed;
-    public float startDashTime;
+    public float MovementSpeed_mpd;
+    public float DashSpeed_mpd;
+    public GameObject DashParticle;
 
-    private Rigidbody rbPlayer;
+    private Rigidbody playerRigidBody;
+    private int dashNextNTicks;
+    private Vector3 preDashVelocity_mpd;
 
     // Start is called before the first frame update
     void Start()
     {
-        rbPlayer = GetComponent<Rigidbody>();
+        playerRigidBody = gameObject.GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (dashNextNTicks > 0)
+        {
+            playerRigidBody.velocity.Normalize();
+            playerRigidBody.velocity *= DashSpeed_mpd;
+            dashNextNTicks--;
+        }
+        else if (dashNextNTicks == 0)
+        {
+            playerRigidBody.velocity = preDashVelocity_mpd;
+            // Messy but it works
+            dashNextNTicks = -1;
+        }
     }
 
     // Update is called once per frame
@@ -23,26 +40,26 @@ public class WasdMovement : MonoBehaviour
         // Use separate Ifs because the player can hold down more than one button.
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(dashParticle, transform.position, Quaternion.identity);
-            if (Input.GetKey(KeyCode.W))
-                transform.position = new Vector3(transform.position.x, transform.position.y + dashSpeed, transform.position.z);
-            if (Input.GetKey(KeyCode.S))
-                transform.position = new Vector3(transform.position.x, transform.position.y - dashSpeed, transform.position.z);
-            if (Input.GetKey(KeyCode.A))
-                transform.position = new Vector3(transform.position.x + dashSpeed, transform.position.y, transform.position.z);
-            if (Input.GetKey(KeyCode.D))
-                transform.position = new Vector3(transform.position.x - dashSpeed, transform.position.y, transform.position.z);
+            Instantiate(DashParticle, transform.position, transform.rotation);
+            dashNextNTicks = 5;
+            preDashVelocity_mpd = playerRigidBody.velocity;
         }
         else
         {
+            Vector3 inputVector = new Vector3(0.0f, 0.0f, 0.0f);
             if (Input.GetKey(KeyCode.W))
-                transform.position = new Vector3(transform.position.x, transform.position.y + MovementSpeed_mpf * Time.deltaTime, transform.position.z);
+                inputVector += new Vector3(0.0f, +1.0f);
             if (Input.GetKey(KeyCode.S))
-                transform.position = new Vector3(transform.position.x, transform.position.y - MovementSpeed_mpf * Time.deltaTime, transform.position.z);
+                inputVector += new Vector3(0.0f, -1.0f);
             if (Input.GetKey(KeyCode.A))
-                transform.position = new Vector3(transform.position.x + MovementSpeed_mpf * Time.deltaTime, transform.position.y, transform.position.z);
+                inputVector += new Vector3(+1.0f, 0.0f);
             if (Input.GetKey(KeyCode.D))
-                transform.position = new Vector3(transform.position.x - MovementSpeed_mpf * Time.deltaTime, transform.position.y, transform.position.z);
+                inputVector += new Vector3(-1.0f, 0.0f);
+
+            inputVector.Normalize();
+            inputVector *= MovementSpeed_mpd;
+
+            playerRigidBody.velocity = inputVector;
         }
     }
 }
